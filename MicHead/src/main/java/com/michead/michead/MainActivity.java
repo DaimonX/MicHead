@@ -19,19 +19,19 @@ public class MainActivity extends Activity {
     byte[] mBuffer;
     AudioRecord mRecorder;
     AudioTrack mPlayer;
-    private Button startButton, stopButton;
+   // private Button startButton, stopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startButton = (Button)findViewById(R.id.startButton);
+  /*      startButton = (Button)findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAudioRecorder();
 
             }
-        });
+        });*/
+        createAudioRecorder();
 
 
     }
