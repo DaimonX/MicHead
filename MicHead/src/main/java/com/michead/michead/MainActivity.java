@@ -1,37 +1,65 @@
 package com.michead.michead;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.AudioTrack;
+import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+
+    final String TAG = "myLogs";
+
+    int mBufferSize, mBufferSize2;
+    byte[] mBuffer;
+    AudioRecord mRecorder;
+    AudioTrack mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createAudioRecorder();
+
     }
 
+    void createAudioRecorder() {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+        int i=AudioRecord.getMinBufferSize(16000,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT);
+        AudioRecord a= new AudioRecord(MediaRecorder.AudioSource.MIC,16000,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT,i);
+        a.startRecording();
+        final byte audiobuffer[]=new byte[1000];
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        new Thread(new Runnable() {
+            public void run() {
+                AudioTrack aud= new AudioTrack(AudioManager.STREAM_MUSIC,16000,
+                        AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT,AudioTrack.getMinBufferSize(16000,AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT),AudioTrack.MODE_STREAM);
+                aud.play();
+                while(true)
+                {
+                    aud.write(audiobuffer,0,audiobuffer.length);
+
+                }
+            }}).start();
+
+
+        while(true)
+        {
+            a.read(audiobuffer,0,audiobuffer.length);
         }
-        return super.onOptionsItemSelected(item);
     }
+
+    public void sameStart(View view) {
+        }
+
 
 }
