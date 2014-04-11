@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="D:\AndroidProjects\MicHead" />
-            <option value="D:\AndroidProjects\MicHead\MicHead" />
+            <option value="C:\Users\Inet\AndroidStudioProjects\MicHead" />
+            <option value="C:\Users\Inet\AndroidStudioProjects\MicHead\MicHead" />
           </set>
         </option>
       </GradleProjectSettings>
