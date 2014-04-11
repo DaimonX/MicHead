@@ -9,6 +9,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
@@ -18,13 +19,20 @@ public class MainActivity extends Activity {
     byte[] mBuffer;
     AudioRecord mRecorder;
     AudioTrack mPlayer;
+    private Button startButton, stopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        startButton = (Button)findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createAudioRecorder();
 
-        createAudioRecorder();
+            }
+        });
+
 
     }
 
