@@ -14,11 +14,6 @@ public class MainActivity extends Activity {
 
     final String TAG = "myLogs";
 
-    int mBufferSize, mBufferSize2;
-    byte[] mBuffer;
-    AudioRecord mRecorder;
-    AudioTrack mPlayer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +25,17 @@ public class MainActivity extends Activity {
 
     void createAudioRecorder() {
 
-        int i=AudioRecord.getMinBufferSize(24000,
-                AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
-        AudioRecord a= new AudioRecord(MediaRecorder.AudioSource.MIC,24000,
-                AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT,i);
-        a.startRecording();
-        final byte audiobuffer[]=new byte[1200];
+        final int rateInHz = 24000;
+        int minBufferSize = AudioRecord.getMinBufferSize(rateInHz,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT);
+        AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                rateInHz,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, minBufferSize);
+        audioRecord.startRecording();
+        final byte audiobuffer[] = new byte[1200];
+
         try {
             Thread.sleep(150);
         } catch (InterruptedException e) {
@@ -44,26 +44,33 @@ public class MainActivity extends Activity {
 
         new Thread(new Runnable() {
             public void run() {
-                AudioTrack aud= new AudioTrack(AudioManager.STREAM_MUSIC,24000,
-                        AudioFormat.CHANNEL_OUT_MONO,AudioFormat.ENCODING_PCM_16BIT,AudioTrack.getMinBufferSize(24000,AudioFormat.CHANNEL_OUT_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT),AudioTrack.MODE_STREAM);
-                aud.play();
-                while(true)
-                {
-                    aud.write(audiobuffer,0,audiobuffer.length);
+                int bufferSize = AudioTrack.getMinBufferSize(rateInHz,
+                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT);
+
+                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                        rateInHz,
+                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT,
+                        bufferSize,
+                        AudioTrack.MODE_STREAM
+                );
+                audioTrack.play();
+                while (true) {
+                    audioTrack.write(audiobuffer, 0, audiobuffer.length);
 
                 }
-            }}).start();
+            }
+        }).start();
 
 
-        while(true)
-        {
-            a.read(audiobuffer,0,audiobuffer.length);
+        while (true) {
+            audioRecord.read(audiobuffer, 0, audiobuffer.length);
         }
     }
 
     public void sameStart(View view) {
-        }
+    }
 
 
 }
