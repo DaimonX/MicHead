@@ -27,11 +27,12 @@ public class MainActivity extends Activity {
 
         final int rateInHz = 24000;
         int minBufferSize = AudioRecord.getMinBufferSize(rateInHz,
-                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
+
         AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                 rateInHz,
-                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, minBufferSize);
         audioRecord.startRecording();
         final byte audiobuffer[] = new byte[1200];
@@ -45,12 +46,12 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
             public void run() {
                 int bufferSize = AudioTrack.getMinBufferSize(rateInHz,
-                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.CHANNEL_CONFIGURATION_MONO,
                         AudioFormat.ENCODING_PCM_16BIT);
 
                 AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                         rateInHz,
-                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.CHANNEL_CONFIGURATION_MONO,
                         AudioFormat.ENCODING_PCM_16BIT,
                         bufferSize,
                         AudioTrack.MODE_STREAM
