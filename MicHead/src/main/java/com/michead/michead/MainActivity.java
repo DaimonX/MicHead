@@ -103,16 +103,16 @@ public class MainActivity extends Activity {
     public void minDelay(View v){
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         final int bufferSize = AudioRecord.getMinBufferSize(freq,
-                AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
 
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, freq,
-                AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.CHANNEL_IN_MONO,
                 MediaRecorder.AudioEncoder.AMR_NB, bufferSize);
 
         audioTrack = new AudioTrack(AudioManager.ROUTE_HEADSET, freq,
-                AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.CHANNEL_OUT_MONO,
                 MediaRecorder.AudioEncoder.AMR_NB, bufferSize,
                 AudioTrack.MODE_STREAM);
 
