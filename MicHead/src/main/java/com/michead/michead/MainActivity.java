@@ -31,17 +31,21 @@ public class MainActivity extends Activity {
     void createAudioRecorder() {
 
         int i=AudioRecord.getMinBufferSize(24000,
-                AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT);
+                AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
         AudioRecord a= new AudioRecord(MediaRecorder.AudioSource.MIC,24000,
-                AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT,i);
+                AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT,i);
         a.startRecording();
         final byte audiobuffer[]=new byte[1200];
-
+        try {
+            Thread.sleep(150);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         new Thread(new Runnable() {
             public void run() {
                 AudioTrack aud= new AudioTrack(AudioManager.STREAM_MUSIC,24000,
-                        AudioFormat.CHANNEL_CONFIGURATION_MONO,AudioFormat.ENCODING_PCM_16BIT,AudioTrack.getMinBufferSize(24000,AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                        AudioFormat.CHANNEL_OUT_MONO,AudioFormat.ENCODING_PCM_16BIT,AudioTrack.getMinBufferSize(24000,AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT),AudioTrack.MODE_STREAM);
                 aud.play();
                 while(true)
