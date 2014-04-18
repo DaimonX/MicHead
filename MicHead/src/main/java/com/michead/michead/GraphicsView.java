@@ -45,6 +45,10 @@ import java.nio.ByteBuffer;
             invalidate();
         }
 
+        public void setLine(int i) {
+            mLinePaint.setStrokeWidth(i);
+        }
+
         @Override
         public void setId(int id) {
             super.setId(id);
@@ -53,8 +57,9 @@ import java.nio.ByteBuffer;
         @Override
         protected void onDraw(Canvas canvas)
         {
+            super.onDraw(canvas);
             //canvas.drawLine(0,0, ByteBuffer.wrap(mCoordinates).getFloat(0), (float) mCoordinates[0],pt );
-            canvas.drawLine(0,0,500,500, mLinePaint);
+            canvas.drawLine(0,0,500,100, mLinePaint);
         }
 
         @Override

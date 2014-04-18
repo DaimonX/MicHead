@@ -1,6 +1,8 @@
 package com.michead.michead;
 
 import android.annotation.TargetApi;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -20,7 +22,14 @@ public class AudioLine extends AsyncTask<Void, Void, Void> {
     final String TAG = "myLogs";
     final int rateInHz = 8000;
     int audioformat = MediaRecorder.AudioEncoder.AMR_NB;
-    AsyncTask<Void, Void, Void> aTrack;
+    AsyncTask<Void, Integer, Void> aTrack;
+
+    public MainActivity mainActivity;
+
+    public AudioLine(MainActivity a)
+    {
+        this.mainActivity = a;
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -37,7 +46,7 @@ public class AudioLine extends AsyncTask<Void, Void, Void> {
         audioRecord.startRecording();
         final byte audiobuffer[] = new byte[minBufferSize];
 
-        aTrack = new AsyncTask<Void, Void, Void>() {
+        aTrack = new AsyncTask<Void, Integer , Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 int bufferSize = AudioTrack.getMinBufferSize(rateInHz,
@@ -46,18 +55,20 @@ public class AudioLine extends AsyncTask<Void, Void, Void> {
                 AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, rateInHz, AudioFormat.CHANNEL_OUT_MONO, audioformat, bufferSize, AudioTrack.MODE_STREAM);
                 Log.d(TAG, " audioTrack.getState()= " + audioTrack.getState());
                 audioTrack.play();
-
                 while (!isCancelled()) {
                     audioTrack.write(audiobuffer, 0, audiobuffer.length);
                     //Log.i("write", Arrays.toString(audiobuffer));
+                    publishProgress(audiobuffer[0]& 0xFF);
                 }
                 return null;
             }
 
             @Override
-            protected void onProgressUpdate(Void... values) {
-                super.onProgressUpdate(values);
-               
+            protected void onProgressUpdate(Integer... values) {
+                GraphicsView gv = (GraphicsView) mainActivity.findViewById(3);
+                gv.setLine(values[0]);
+                gv.setLineColor(-65536+values[0]);
+                gv.invalidate();
             }
         };
         aTrack.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);

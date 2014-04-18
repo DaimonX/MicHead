@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         //GraphicsView gv = new GraphicsView(this);
         setContentView(R.layout.activity_main);
-        al = new AudioLine();
+        al = new AudioLine(this);
         v = (LinearLayout) findViewById(R.id.linearLayout);
         myView = new GraphicsView(this);
         myView.setId(3);
@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 
         switch (al.getStatus()) {
             case FINISHED:
-                al = new AudioLine();
+                al = new AudioLine(this);
                 al.execute();
                 btn.setText(getResources().getString(R.string.stop_text));
                 Log.i("", "FINISHED");
