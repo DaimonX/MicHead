@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".MainActivity">
+
     <LinearLayout
+        android:id="@+id/linearLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/star_text"
+            android:text="@string/start_text"
             android:id="@+id/startstop"
             android:onClick="sameStart" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mini_delay"
-            android:id="@+id/minDelay"
-            android:onClick="minDelay" />
+
 
     </LinearLayout>
+
 </LinearLayout>
